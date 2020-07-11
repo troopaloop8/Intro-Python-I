@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 The Python standard library's 'calendar' module allows you to
 render a calendar to your terminal.
@@ -30,3 +32,29 @@ it should use today’s date to get the month and year.
 import sys
 import calendar
 from datetime import datetime
+
+custom_calendar = calendar.TextCalendar()
+
+def print_custom_calendar(month, year):
+  print(custom_calendar.formatmonth(year, month))
+
+def convert_to_int(*args):
+  try:
+    return list(map(lambda x: int(x), args))
+  except TypeError:
+    print(f'You dun goofed it')
+try:
+  args = sys.argv[1:3] 
+  month, year = convert_to_int(*args)
+  print_custom_calendar(month, year)
+except ValueError:
+  try:
+    today = datetime.date(datetime.now())
+    
+    month, year = sys.argv[1], today.year
+    month, year = convert_to_int(month, year)
+    print_custom_calendar(month, year)
+  except IndexError:
+    # if we get here then user did not supply any args
+    month, year = convert_to_int(today.month, today.year)
+    print_custom_calendar(month, year)
